@@ -23,7 +23,7 @@ albumes.createAlbum
 albumes.deleteAlbum
 albumes.updateAlbum
 albumes.getCancionesByAlbum
-albumes.
+//albumes.
 
 canciones.getCanciones;
 canciones.getCancion;
