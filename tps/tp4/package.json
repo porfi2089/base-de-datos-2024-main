@@ -16,6 +16,6 @@
         "cli-color": "^2.0.3",
         "console-table-printer": "^2.11.1",
         "express": "^4.18.2",
-        "mysql2": "^2.3.3"
+        "mysql2": "^3.10.1"
     }
 }

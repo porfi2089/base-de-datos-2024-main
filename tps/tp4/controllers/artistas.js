@@ -1,23 +1,26 @@
 import { conn } from "../db.js";
 
-const getArtistas = async (_, res) => {
+const getArtistas = async (fields, res) => {
     // Completar con la consulta que devuelve todos los artistas
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la siguiente forma:
-    /*
-        [
-            {
-                "id": "Id del artista",
-                "nombre": "Nombre del artista"
-            },
-            {
-                "id": "Id del artista",
-                "nombre": "Nombre del artista"
-            },
-            ...
-        ]
-    */
+    try{
+        const [rows] = await conn.query("SELECT id, nombre FROM artistas");
+        const artistas = rows.map(artista => ({
+            id: artista.id,
+            nombre: artista.nombre
+        }));
+
+        // Enviar la respuesta
+        res.json(artistas);
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+    }
+
+
 };
+
 
 const getArtista = async (req, res) => {
     // Completar con la consulta que devuelve un artista

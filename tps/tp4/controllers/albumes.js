@@ -1,24 +1,13 @@
 import { conn } from "../db.js";
 
 const getAlbumes = async (_, res) => {
-    // Completar con la consulta que devuelve todos los albumes
-    // Recordar que los parámetros de una consulta GET se encuentran en req.params
-    // Deberían devolver los datos de la siguiente forma:
-    /*
-        [
-            {
-                "id": 1,
-                "nombre": "Nombre del album",
-                "nombre_artista": "Nombre del artista"
-            },
-            {
-                "id": 2,
-                "nombre": "Nombre del album",
-                "nombre_artista": "Nombre del artista"
-            },
-            ...
-        ]
-    */
+        try{
+            const [results, fields] = await connection.query(
+                'SELECT * FROM albumes INNER JOIN artistas ON albumes.artista_id = artistas.id;'
+            );    
+        } catch (e) {
+            console.log(e);
+        }
 };
 
 const getAlbum = async (req, res) => {

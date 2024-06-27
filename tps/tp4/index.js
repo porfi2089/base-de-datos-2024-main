@@ -14,26 +14,22 @@ app.get("/", (_, res) => {
 
 /* ------------------- Rutas ------------------- */
 
-// Artistas
-// Completar con las rutas de artistas
-// Para acceder a cada funcion de artistas, se debe hacer de la siguiente forma:
-// artistas.getArtistas;
-// artistas.getArtista;
-// ...
+artistas.getArtistas;
+artistas.getArtista;
 
-// Albumes
-// Completar con las rutas de albumes
-// Para acceder a cada funcion de albumes, se debe hacer de la siguiente forma:
-// albumes.getAlbumes;
-// albumes.getAlbum;
-// ...
+albumes.getAlbumes;
+albumes.getAlbum;
+albumes.createAlbum
+albumes.deleteAlbum
+albumes.updateAlbum
+albumes.getCancionesByAlbum
+albumes.
 
-// Canciones
-// Completar con las rutas de canciones
-// Para acceder a cada funcion de canciones, se debe hacer de la siguiente forma:
-// canciones.getCanciones;
-// canciones.getCancion;
-// ...
+canciones.getCanciones;
+canciones.getCancion;
+canciones.updateCancion;
+canciones.deleteCancion;
+canciones.reproducirCancion;
 
 app.listen(port, () => {
     console.log(`SpoTICfy API listening at http://localhost:${port}`);
