@@ -23,7 +23,7 @@ const getAlbum = async (req, res) => {
 
     try {
         const [results, fields] = await connection.query(
-            'SELECT * FROM albumes WHERE albumes.id = ?',
+            'SELECT * FROM albumes WHERE id = ?',
             [albumId]
         );
         res.send(results)
@@ -35,67 +35,42 @@ const getAlbum = async (req, res) => {
 };
 
 const createAlbum = async (req, res) => {
-    const { nombre, artista } = req.body; // Obtener datos del cuerpo de la solicitud
-
-    try {
-        // Insertar el nuevo álbum en la base de datos
+    const { nombre, artista } = req.body; // Obtener nombre y artista desde el cuerpo de la solicitud
+        // Ejecutar la consulta para insertar un nuevo álbum
         const [result, fields] = await connection.query(
-            'INSERT INTO albumes (nombre, id) VALUES (?, ?)',
-            [nombre, artista]
-        );
-        res.send(result)
-        // Obtener el ID del álbum creado
-        const nuevoAlbumId = result.insertId;
-
-        // Consultar para obtener los datos del álbum recién creado
-        const [albumCreado, _] = await connection.query(
-            'SELECT albumes.id, albumes.nombre AS nombre_album, artistas.nombre AS nombre_artista ' +
-            'FROM albumes ' +
-            'INNER JOIN artistas ON albumes.artista = artistas.id ' +
-            'WHERE albumes.id = ?',
-            [nuevoAlbumId]
-        );
-    } catch (e) {
-        // Capturar y manejar errores
-        console.log(e);
-        res.status(500).json({ message: 'Error interno del servidor' });
-    }
+            'INSERT INTO albumes (albumes.nombre, albumes.artista) VALUES (?, ?)',
+            [nombre, idartista]);
+            
+    res.send("Se Creo");       
 };
 
 
 const updateAlbum = async (req, res) => {
     const albumId = req.params.id; // Obtener el ID del álbum desde los parámetros de la solicitud
-    const { nombre, artista } = req.body; // Obtener nombre y artista desde el cuerpo de la solicitud
+    const nombre = req.body.nombre; // Obtener el nombre desde el cuerpo de la solicitud
+    const idartista = req.body.artista; // Obtener el artista desde el cuerpo de la solicitud
 
     try {
         // Actualizar el álbum en la base de datos
         const [result, fields] = await connection.query(
             'UPDATE albumes SET nombre = ?, artista = ? WHERE id = ?',
-            [nombre, artista, albumId]
+            [nombre, idartista, albumId]
         );
 
         // Verificar si se actualizó correctamente
         if (result.affectedRows > 0) {
-            // Consultar para obtener los datos actualizados del álbum
-            const [albumActualizado, _] = await connection.query(
-                'SELECT albumes.id, albumes.nombre AS nombre_album, artistas.nombre AS nombre_artista ' +
-                'FROM albumes ' +
-                'INNER JOIN artistas ON albumes.artista = artistas.id ' +
-                'WHERE albumes.id = ?',
-                [albumId]
-            );
-
-            // Enviar la respuesta con los datos actualizados del álbum
-            res.json(albumActualizado[0]);
+            // Enviar una respuesta indicando que la actualización fue exitosa
+            res.send('Álbum actualizado exitosamente');
         } else {
-            res.status(404).json({ message: 'No se encontró el álbum para actualizar' });
+            res.status(404).send('No se encontró el álbum para actualizar');
         }
     } catch (e) {
         // Capturar y manejar errores
         console.log(e);
-        res.status(500).json({ message: 'Error interno del servidor' });
+        res.status(500).send('Error interno del servidor');
     }
 };
+
 
 
 const deleteAlbum = async (req, res) => {

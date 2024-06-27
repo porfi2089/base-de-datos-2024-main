@@ -15,7 +15,7 @@ app.get("/", (_, res) => {
 app.get("/artista/:id", artistas.getArtista);
 
 app.get("/albumes", albumes.getAlbumes);
-app.get("/album/:id", albumes.getAlbum);
+app.get("/albumes/:id", albumes.getAlbum);
 app.get("/create-album/:nombre", albumes.createAlbum);
 app.get("/delete-album/:id", albumes.deleteAlbum);
 app.get("/update-album/:id", albumes.updateAlbum);
