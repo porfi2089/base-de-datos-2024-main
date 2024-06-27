@@ -34,14 +34,12 @@ const getAlbum = async (req, res) => {
     }
 };
 
-const createAlbum = async (req, res) => {//falta
-    const { nombre, artista } = req.body; // Obtener nombre y artista desde el cuerpo de la solicitud
-
-        // Ejecutar la consulta para insertar un nuevo álbum
-        const [result, fields] = await connection.query(
-            'INSERT INTO albumes (albumes.nombre, albumes.artista) VALUES (?, ?)',
-            [nombre, idartista]);        
-        res.send("Álbum creado correctamente");
+const createAlbum = async (req, res) => {
+    const nombre = req.body.nombre;
+    const artista = req.body.artista;
+    // Ejecutar la consulta para insertar un nuevo álbum
+    const [result, fields] = await connection.query('INSERT INTO albumes (albumes.nombre, albumes.artista) VALUES (?, ?)', [nombre, artista]);        
+    res.send("Álbum creado correctamente");
 };
 
 
@@ -76,7 +74,7 @@ const updateAlbum = async (req, res) => {//fakta
 const deleteAlbum = async (req, res) => {
     // Completar con la consulta que elimina un album
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
-    
+
 };
 
 const getCancionesByAlbum = async (req, res) => {

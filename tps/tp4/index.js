@@ -16,7 +16,7 @@ app.get("/artista/:id", artistas.getArtista);
 
 app.get("/albumes", albumes.getAlbumes);
 app.get("/albumes/:id", albumes.getAlbum);
-app.get("/create-album/:nombre", albumes.createAlbum);
+app.post("/albumes", albumes.createAlbum);
 app.get("/delete-album/:id", albumes.deleteAlbum);
 app.get("/update-album/:id", albumes.updateAlbum);
 app.get("/canciones-by-album/:id", albumes.getCancionesByAlbum);
