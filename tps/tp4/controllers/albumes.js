@@ -3,7 +3,7 @@ import { conn } from "../db.js";
 const getAlbumes = async (req, res) => {
         try{
             const [results, fields] = await connection.query(
-                'SELECT * FROM albumes INNER JOIN artistas ON albumes.artista_id = artistas.id;'
+                'SELECT * FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id'
             );    
         } catch (e) {
             console.log(e);
