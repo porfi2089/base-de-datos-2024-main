@@ -1,10 +1,18 @@
-import { conn } from "../db.js";
+import mysql from "mysql2/promise";
+
+ const connection = await mysql.createConnection({
+    user:'AlumnosOrt',
+    password: 'TP4',
+    host: 'localhost',
+    database:'spoticfy'
+});
 
 const getAlbumes = async (req, res) => {
         try{
             const [results, fields] = await connection.query(
                 'SELECT * FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id'
             );    
+            res.send(results)
         } catch (e) {
             console.log(e);
         }
@@ -15,25 +23,10 @@ const getAlbum = async (req, res) => {
 
     try {
         const [results, fields] = await connection.query(
-            'SELECT albumes.id, albumes.nombre AS nombre_album, artistas.nombre AS nombre_artista ' +
-            'FROM albumes ' +
-            'INNER JOIN artistas ON albumes.artista = artistas.id ' +
-            'WHERE albumes.id = ?',
+            'SELECT * FROM albumes WHERE albumes.id = ?',
             [albumId]
         );
-
-        if (results.length > 0) {
-            //si se encontró el álbum, devolverlo en formato JSON
-            const album = {
-                id: results[0].id,
-                nombre: results[0].nombre_album,
-                nombre_artista: results[0].nombre_artista
-            };
-            res.json(album);
-        } else {
-            //si no se encontro el álbum, devolver un mensaje de error
-            res.status(404).json({ message: 'Álbum no encontrado' });
-        }
+        res.send(results)
     } catch (e) {
         //capturar y manejar errores
         console.log(e);
@@ -50,7 +43,7 @@ const createAlbum = async (req, res) => {
             'INSERT INTO albumes (nombre, id) VALUES (?, ?)',
             [nombre, artista]
         );
-
+        res.send(result)
         // Obtener el ID del álbum creado
         const nuevoAlbumId = result.insertId;
 
@@ -62,19 +55,6 @@ const createAlbum = async (req, res) => {
             'WHERE albumes.id = ?',
             [nuevoAlbumId]
         );
-
-        if (albumCreado.length > 0) {
-            // Si se encontró el álbum creado, devolverlo en formato JSON
-            const album = {
-                id: albumCreado[0].id,
-                nombre: albumCreado[0].nombre_album,
-                nombre_artista: albumCreado[0].nombre_artista
-            };
-            res.status(201).json(album); // Devolver el álbum creado con código de estado 201 (Created)
-        } else {
-            // Si no se encuentra el álbum creado (esto debería ser imposible si la inserción fue exitosa)
-            res.status(500).json({ message: 'No se pudo obtener el álbum creado' });
-        }
     } catch (e) {
         // Capturar y manejar errores
         console.log(e);
@@ -105,21 +85,10 @@ const updateAlbum = async (req, res) => {
                 [albumId]
             );
 
-            if (albumActualizado.length > 0) {
-                // Si se encontró el álbum actualizado, devolverlo en formato JSON
-                const album = {
-                    id: albumActualizado[0].id,
-                    nombre: albumActualizado[0].nombre_album,
-                    nombre_artista: albumActualizado[0].nombre_artista
-                };
-                res.status(200).json(album); // Devolver el álbum actualizado con código de estado 200 (OK)
-            } else {
-                // Si no se encuentra el álbum actualizado (esto debería ser imposible si la actualización fue exitosa)
-                res.status(500).json({ message: 'No se pudo obtener el álbum actualizado' });
-            }
+            // Enviar la respuesta con los datos actualizados del álbum
+            res.json(albumActualizado[0]);
         } else {
-            // Si no se afectó ninguna fila (posiblemente porque el álbum con ese ID no existe)
-            res.status(404).json({ message: 'Álbum no encontrado' });
+            res.status(404).json({ message: 'No se encontró el álbum para actualizar' });
         }
     } catch (e) {
         // Capturar y manejar errores
