@@ -12,24 +12,20 @@ app.get("/", (_, res) => {
     res.send("SpoTICfy API working!");
 });
 
-/* ------------------- Rutas ------------------- */
+app.get("/artista/:id", artistas.getArtista);
 
-artistas.getArtistas;
-artistas.getArtista;
-
-albumes.getAlbumes;
-albumes.getAlbum;
-albumes.createAlbum
-albumes.deleteAlbum
-albumes.updateAlbum
-albumes.getCancionesByAlbum
-//albumes.
-
-canciones.getCanciones;
-canciones.getCancion;
-canciones.updateCancion;
-canciones.deleteCancion;
-canciones.reproducirCancion;
+app.get("/albumes", albumes.getAlbumes);
+app.get("/album/:id", albumes.getAlbum);
+app.get("/create-album/:nombre", albumes.createAlbum);
+app.get("/delete-album/:id", albumes.deleteAlbum);
+app.get("/update-album/:id", albumes.updateAlbum);
+app.get("/canciones-by-album/:id", albumes.getCancionesByAlbum);
+ 
+app.get("/canciones", canciones.getCanciones);
+app.get("/cancion/:id", canciones.getCancion);
+app.get("/update-cancion/:id", canciones.updateCancion);
+app.get("/delete-cancion/:id", canciones.deleteCancion);
+app.get("/reproducir-cancion/id", canciones.reproducirCancion);
 
 app.listen(port, () => {
     console.log(`SpoTICfy API listening at http://localhost:${port}`);
