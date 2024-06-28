@@ -26,7 +26,7 @@ const getAlbum = async (req, res) => {
             'SELECT * FROM albumes WHERE id = ?',
             [albumId]
         );
-        res.send(results)
+        res.send(results[0])
     } catch (e) {
         //capturar y manejar errores
         console.log(e);
