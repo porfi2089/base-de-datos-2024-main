@@ -1,24 +1,17 @@
 import { conn } from "../db.js";
 
+const connection = await mysql.createConnection({
+    user:'AlumnosOrt',
+    password: 'TP4',
+    host: 'localhost',
+    database:'spoticfy'
+});
 const getArtistas = async (fields, res) => {
     // Completar con la consulta que devuelve todos los artistas
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la siguiente forma:
-    try{
-        const [rows] = await conn.query("SELECT id, nombre FROM artistas");
-        const artistas = rows.map(artista => ({
-            id: artista.id,
-            nombre: artista.nombre
-        }));
-
-        // Enviar la respuesta
-        res.json(artistas);
-    } catch (error) {
-
-        res.status(500).json({ error: error.message });
-    }
-
-
+    const [rows, fields] = await conn.query("SELECT * FROM artistas");
+         res.json(rows);
 };
 
 
@@ -32,6 +25,10 @@ const getArtista = async (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+   //utilizamos el mismo formato que en albumes
+        const id = req.params.id;
+        const [rows, fields] = await conn.query("SELECT * FROM artistas WHERE id = ?", [id]);
+        res.json(rows[0]);
 };
 
 const createArtista = async (req, res) => {
@@ -43,6 +40,9 @@ const createArtista = async (req, res) => {
             "nombre": "Nombre del artista",
         }
     */
+        const nombre = req.body.nombre; 
+        const [rows, fields] = await conn.query("INSERT INTO artistas (artistas.nombre) VALUES (?)", [nombre]);
+        res.send("Se a creado de manera correcta"); 
 };
 
 const updateArtista = async (req, res) => {
@@ -54,6 +54,11 @@ const updateArtista = async (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+   //estamos replicando la misma estructura que utiliuzamos en albumes
+        const id = req.params.id; 
+        const nombre = req.body.nombre; 
+        const [rows, fields] = await conn.query("UPDATE artistas SET artistas.nombre = ? WHERE id = ? ", [nombre, id]);
+        res.send("Se a actualizado de manera correcta"); 
 };
 
 const deleteArtista = async (req, res) => {
