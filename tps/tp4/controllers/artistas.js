@@ -64,12 +64,19 @@ const updateArtista = async (req, res) => {
 const deleteArtista = async (req, res) => {
     // Completar con la consulta que elimina un artista
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
+    const id = req.params.id;
+    const [rows, fields] = await conn.query("DELETE FROM artistas WHERE id = ? ", [id]);
+    res.send ("Se a logrado eliminar");
 };
 
 const getAlbumesByArtista = async (req, res) => {
     // Completar con la consulta que devuelve las canciones de un artista
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la misma forma que getAlbumes
+    const id = req.params.id;
+    const [rows, fields] = await conn.query(
+        "SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes JOIN artistas ON artistas.id = albumes.artista WHERE artistas.id = ?", [id])
+    res.json(rows);
 };
 
 const getCancionesByArtista = async (req, res) => {
@@ -77,6 +84,10 @@ const getCancionesByArtista = async (req, res) => {
     // (tener en cuenta que las canciones están asociadas a un álbum, y los álbumes a un artista)
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la misma forma que getCanciones
+    const id = req.params.id;
+    const [rows, fields] = await conn.query(
+        "SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM albumes JOIN artistas ON artistas.id = albumes.artista JOIN canciones ON canciones.album = albumes.id WHERE artistas.id = ?", [id])    
+    res.json(rows);
 };
 
 const artistas = {
